@@ -59,7 +59,7 @@ app.get('/login', auth, (req, res)=>{
 app.get('/games/:id', auth, (req, res)=>{
     let addReview = req.user ? true : false;
     Article.findById(req.params.id, (err, article)=>{
-        if(err) res.status(400).send(err);
+        if(err) return res.status(400).send(err);
         UserReview.find({'postId':req.params.id}).exec((err, userReviews)=>{
             res.render('article', {
                 date: moment(article.createdAt).format('MM/DD/YY'),
@@ -150,7 +150,7 @@ app.post('/api/add_article', auth, (req, res)=>{
         rating: req.body.rating
     });
     article.save((err, doc)=>{
-        if(err) res.status(400).send(err);
+        if(err) return res.status(400).send(err);
         res.status(200).send();
     });
 })
